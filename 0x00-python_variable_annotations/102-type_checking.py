@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
-"""Contains a function that returns  a list of integers multiplied by certain factor."""
+"""
+Contains a function that returns  a list of integers
+multiplied by certain factor.
+"""
 from typing import Tuple, List
 
 
