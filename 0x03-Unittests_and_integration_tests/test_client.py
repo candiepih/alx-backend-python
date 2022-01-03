@@ -52,10 +52,11 @@ class TestGithubOrgClient(unittest.TestCase):
     def test_public_repos_url(self):
         """Test `public_repos_url`."""
         client = GithubOrgClient('google')
+        url = 'https://api.github.com/orgs/google/repos'
         with patch.object(GithubOrgClient, 'org',
                           new_callable=PropertyMock,
                           return_value={
-                              'repos_url': 'https://api.github.com/orgs/google/repos'
+                              'repos_url': url
                           }) as mock_get:
             self.assertEqual(client._public_repos_url,
                              mock_get.return_value['repos_url'])
