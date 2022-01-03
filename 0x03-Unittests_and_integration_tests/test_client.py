@@ -66,18 +66,18 @@ class TestGithubOrgClient(unittest.TestCase):
     @patch("utils.get_json")
     def test_public_repos(self, mock_get_json):
         """Test `public_repos`."""
-        mock_get_json.return_value.json.return_value = [
-            'truth', 'ruby-openid-apps-discovery',
-            'autoparse', 'anvil-build',
-            'googletv-android-samples', 'ChannelPlate'
-        ]
+        mock_get_json.return_value = [{
+            'name': 'repo1',
+        }]
 
         with patch.object(GithubOrgClient, 'public_repos',
-                          new_callable=PropertyMock) as mock_public_repos:
-            mock_public_repos.return_value = \
-                mock_get_json.return_value.json.return_value
-            self.assertEqual(mock_public_repos.return_value,
-                             mock_get_json.return_value.json.return_value)
+                          new_callable=PropertyMock,
+                          return_value=mock_get_json.return_value)\
+                as mock_public_repos:
+            client = GithubOrgClient('google')
+            self.assertEqual(client.public_repos,
+                             mock_public_repos.return_value)
+            mock_public_repos.assert_called_once()
 
     @parameterized.expand([
         ({"license": {"key": "my_license"}}, "my_license", True),
