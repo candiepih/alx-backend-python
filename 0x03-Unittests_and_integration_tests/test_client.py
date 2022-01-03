@@ -63,16 +63,14 @@ class TestGithubOrgClient(unittest.TestCase):
                              mock_get.return_value['repos_url'])
             mock_get.assert_called_once()
 
-    @patch("client.get_json")
+    @patch("client.get_json", return_value=[
+        {'name': 'autoparse'},
+        {'name': 'ChannelPlate'},
+        {'name': 'truth'}
+    ])
     def test_public_repos(self, mock_get_json):
         """Test `public_repos`."""
-        mock_get_json.return_value = [
-            {'name': 'autoparse'},
-            {'name': 'ChannelPlate'},
-            {'name': 'truth'}
-        ]
         url = 'https://api.github.com/orgs/google/repos'
-
         with patch.object(GithubOrgClient, '_public_repos_url',
                           new_callable=PropertyMock,
                           return_value=url) as mock_public_repos:
@@ -80,7 +78,7 @@ class TestGithubOrgClient(unittest.TestCase):
             repos = list(map(lambda x: x['name'],
                              mock_get_json.return_value))
             self.assertEqual(client.public_repos(), repos)
-            mock_get_json.assert_called_once_with(url)
+            mock_get_json.assert_called_once()
             mock_public_repos.assert_called_once()
 
     @parameterized.expand([
