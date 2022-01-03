@@ -5,7 +5,8 @@ Module contains tests for the client module.
 import unittest
 from unittest.mock import patch, PropertyMock
 from client import GithubOrgClient
-from parameterized import parameterized
+from parameterized import parameterized, parameterized_class
+from fixtures import TEST_PAYLOAD
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -92,3 +93,32 @@ class TestGithubOrgClient(unittest.TestCase):
         client = GithubOrgClient('google')
         client_return = client.has_license(repo, current_license)
         self.assertEqual(client_return, expected)
+
+
+@parameterized_class(
+    [
+        {'org_payload': TEST_PAYLOAD[0][0]},
+        {'repo_payload': TEST_PAYLOAD[0][1]},
+        {'expected_repos': TEST_PAYLOAD[0][2]},
+        {'apache2_repos': TEST_PAYLOAD[0][3]}
+    ]
+)
+class TestIntegrationGithubOrgClient(unittest.TestCase):
+    @patch("requests.get")
+    def setUpClass(self, mock_get_request) -> None:
+        """Set up the class."""
+        mock_get_request.return_value = [
+            self.org_payload, self.repo_payload,
+            self.expected_repos, self.apache2_repos
+        ]
+        self.get_patcher = mock_get_request
+        self.get_patcher.side_effect = self.get_side_effect
+        self.mock_get = self.get_patcher.start()
+
+    def side_effect(self):
+        """Return the side effect."""
+        return self.mock_get()
+
+    def tearDown(self) -> None:
+        """Tear down the test."""
+        self.get_patcher.stop()
