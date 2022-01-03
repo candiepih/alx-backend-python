@@ -21,8 +21,10 @@ class TestGithubOrgClient(unittest.TestCase):
             'events_url': 'https://api.github.com/orgs/google/events',
             'hooks_url': 'https://api.github.com/orgs/google/hooks',
             'issues_url': 'https://api.github.com/orgs/google/issues',
-            'members_url': 'https://api.github.com/orgs/google/members{/member}',
-            'public_members_url': 'https://api.github.com/orgs/google/public_members{/member}',
+            'members_url': 'https://api.github.com/orgs/google/members'
+                           '{/member}',
+            'public_members_url': 'https://api.github.com/orgs/google/'
+                                  'public_members{/member}',
             'avatar_url': 'https://avatars3.githubusercontent.com/u/1?v=4',
             'description': 'Google'
         }),
@@ -36,7 +38,8 @@ class TestGithubOrgClient(unittest.TestCase):
             'hooks_url': 'https://api.github.com/orgs/abc/hooks',
             'issues_url': 'https://api.github.com/orgs/abc/issues',
             'members_url': 'https://api.github.com/orgs/abc/members{/member}',
-            'public_members_url': 'https://api.github.com/orgs/abc/public_members{/member}',
+            'public_members_url': 'https://api.github.com/orgs/abc/'
+                                  'public_members{/member}',
             'avatar_url': 'https://avatars3.githubusercontent.com/u/2?v=4',
             'description': 'ABC'
         })
@@ -82,7 +85,8 @@ class TestGithubOrgClient(unittest.TestCase):
         ({"license": {"key": "my_license"}}, "my_license", True),
         ({"license": {"key": "other_license"}}, "my_license", False),
     ])
-    def test_has_license(self, repo: dict, current_license: str, expected: bool):
+    def test_has_license(self, repo: dict,
+                         current_license: str, expected: bool):
         """Test `has_license`."""
         client = GithubOrgClient('google')
         self.assertEqual(client.has_license(repo, current_license), expected)
