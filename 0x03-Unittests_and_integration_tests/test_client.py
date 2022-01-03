@@ -4,8 +4,6 @@ import unittest
 from unittest.mock import patch, PropertyMock
 from client import GithubOrgClient
 from parameterized import parameterized
-# parameterized_class
-# from fixtures import TEST_PAYLOAD
 
 
 class TestGithubOrgClient(unittest.TestCase):
@@ -85,21 +83,8 @@ class TestGithubOrgClient(unittest.TestCase):
         ({"license": {"key": "my_license"}}, "my_license", True),
         ({"license": {"key": "other_license"}}, "my_license", False),
     ])
-    def test_has_license(self, repo: dict,
-                         current_license: str, expected: bool):
+    def test_has_license(self, repo, current_license, expected):
         """Test `has_license`."""
         client = GithubOrgClient('google')
-        self.assertEqual(client.has_license(repo, current_license), expected)
-
-# @parameterized_class(
-#     ("repo", "current_license", "expected"),
-# )
-# class TestIntegrationGithubOrgClient(unittest.TestCase):
-#     @patch("requests.get")
-#     def setUpClass(self, mock_get_request) -> None:
-#         """Set up the class."""
-#         pass
-#
-#     def tearDown(self) -> None:
-#         """Tear down the test."""
-#         pass
+        client_return = client.has_license(repo, current_license)
+        self.assertEqual(client_return, expected)
