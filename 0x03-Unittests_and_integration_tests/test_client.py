@@ -58,7 +58,7 @@ class TestGithubOrgClient(unittest.TestCase):
                               'repos_url': 'https://api.github.com/orgs/google/repos'
                           }) as mock_get:
             self.assertEqual(client._public_repos_url,
-                             'https://api.github.com/orgs/google/repos')
+                             mock_get.return_value['repos_url'])
             mock_get.assert_called_once()
 
     @patch("utils.get_json")
