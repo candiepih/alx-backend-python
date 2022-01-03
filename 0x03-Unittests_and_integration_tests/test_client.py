@@ -104,6 +104,7 @@ class TestGithubOrgClient(unittest.TestCase):
     ]
 )
 class TestIntegrationGithubOrgClient(unittest.TestCase):
+    """Integration test: fixtures"""
     @patch("requests.get")
     def setUpClass(self, mock_get_request) -> None:
         """Set up the class."""
